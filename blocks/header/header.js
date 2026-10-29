@@ -63,6 +63,16 @@ async function fetchNav() {
     const img = pic.querySelector('img');
     if (img) pic.replaceWith(img);
   });
+  // ...and move text that followed an icon out of its link: pull it back in
+  doc.querySelectorAll('li > a').forEach((a) => {
+    if (!a.querySelector('img') || a.textContent.trim()) return;
+    let next = a.nextSibling;
+    while (next && next.nodeType === Node.TEXT_NODE) {
+      const following = next.nextSibling;
+      if (next.textContent.trim()) a.append(next);
+      next = following;
+    }
+  });
   doc.querySelectorAll('img[src]').forEach((img) => {
     img.src = new URL(img.getAttribute('src'), base).href;
   });
