@@ -56,6 +56,13 @@ async function fetchNav() {
   const html = await resp.text();
   const doc = new DOMParser().parseFromString(`<body>${html}</body>`, 'text/html');
   const base = new URL(resp.url, window.location.href).href;
+  // published fragments wrap list-item content in <p> and images in <picture>:
+  // normalize to the authored shape the builders below expect
+  doc.querySelectorAll('li > p').forEach((p) => p.replaceWith(...p.childNodes));
+  doc.querySelectorAll('picture').forEach((pic) => {
+    const img = pic.querySelector('img');
+    if (img) pic.replaceWith(img);
+  });
   doc.querySelectorAll('img[src]').forEach((img) => {
     img.src = new URL(img.getAttribute('src'), base).href;
   });
@@ -224,7 +231,8 @@ function buildSearch(li, link) {
 
 function buildDropdown(li) {
   const sub = li.querySelector(':scope > ul');
-  const icon = li.querySelector(':scope > img');
+  // published fragments wrap the label in <p> and the icon in <picture>
+  const icon = li.querySelector(':scope > img, :scope > picture > img, :scope > p > img, :scope > p > picture > img');
   const label = ownText(li);
   const panelId = uid('nav-dropdown');
   li.classList.add('nav-dropdown-item');

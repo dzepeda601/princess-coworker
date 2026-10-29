@@ -109,6 +109,15 @@ function buildPartners(section) {
   [...section.children].forEach((p) => {
     const link = p.querySelector('a');
     if (!link) return;
+    if (link.querySelector('img')) {
+      // the publishing pipeline moves text that followed an image out of its link: pull it back in
+      let next = link.nextSibling;
+      while (next && next.nodeType === Node.TEXT_NODE) {
+        const following = next.nextSibling;
+        if (next.textContent.trim()) link.append(next);
+        next = following;
+      }
+    }
     const item = el('div', { class: 'footer-partner' });
     if (link.closest('strong, b')) {
       link.classList.add('footer-button');
