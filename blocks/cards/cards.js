@@ -180,6 +180,33 @@ function classifyCard(li) {
 }
 
 /**
+ * Cards in one set should share an image shape. When the authored images
+ * differ in aspect ratio, crop them all to a common portrait frame (CSS).
+ * Ratios come from width/height attributes, or the decoded image.
+ * @param {Element} block cards block
+ */
+async function unifyImageRatios(block) {
+  const imgs = [...block.querySelectorAll('.cards-card-image img')];
+  if (imgs.length < 2) return;
+  const ratioOf = async (img) => {
+    const w = Number(img.getAttribute('width'));
+    const h = Number(img.getAttribute('height'));
+    if (w && h) return w / h;
+    if (!img.complete) {
+      await new Promise((resolve) => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    }
+    return img.naturalHeight ? img.naturalWidth / img.naturalHeight : 0;
+  };
+  const ratios = (await Promise.all(imgs.map(ratioOf))).filter(Boolean);
+  if (ratios.length > 1 && Math.max(...ratios) / Math.min(...ratios) > 1.05) {
+    block.classList.add('cards-images-uniform');
+  }
+}
+
+/**
  * Decorate regular cards (authored rows with image + body).
  */
 function decorateDefault(block) {
@@ -229,6 +256,8 @@ function decorateDefault(block) {
   if (cards.length % 4 === 0 && cards.length % 3 !== 0) block.classList.add('cards-cols-4');
 
   block.replaceChildren(ul);
+  // overlay tiles are already square; elsewhere wait for (lazy) images without blocking
+  if (!block.classList.contains('cards-layout-overlay')) unifyImageRatios(block);
 }
 
 /**

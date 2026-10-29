@@ -117,6 +117,11 @@
   transform: scale(1.05);
 }
 
+/* mixed image shapes in one set: crop all to the source's 4:5 portrait frame */
+.cards.cards-images-uniform .cards-card-image img {
+  aspect-ratio: 4 / 5;
+}
+
 .cards:is(.links, .bento) .cards-card-image img {
   aspect-ratio: 16 / 9;
   transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
