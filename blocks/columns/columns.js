@@ -40,14 +40,12 @@ export default function decorate(block) {
   // setup image columns
   [...block.children].forEach((row) => {
     [...row.children].forEach((col) => {
-      const pic = col.querySelector('picture');
-      if (pic) {
-        const picWrapper = pic.closest('div');
-        if (picWrapper && picWrapper.children.length === 1) {
-          // picture is only content in column
-          picWrapper.classList.add('columns-img-col');
-        }
-      }
+      // image column: only pictures, bare or each in its own text-free paragraph
+      // (published pages wrap every picture in a <p>, local authoring may not)
+      const children = [...col.children];
+      const isImageOnly = (el) => el.matches('picture')
+        || (el.matches('p') && el.querySelector('picture') && !el.textContent.trim());
+      if (children.length && children.every(isImageOnly)) col.classList.add('columns-img-col');
 
       // several images in one image column: lift them out of the paragraph
       // EDS wraps them in, so they can sit side by side
