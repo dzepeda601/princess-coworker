@@ -252,15 +252,16 @@ function collectCards(element, document) {
 }
 
 export default function parse(element, { document }) {
-  const cells = [];
-  const seen = new Set();
-
+  // carousels repeat their slides; keep one card per title+link, preferring the copy
+  // whose live price had loaded (the struck-through "was" price marks a priced card)
+  const byKey = new Map();
+  const hasPrice = (card) => card.body.some((el) => el.querySelector && el.querySelector('s'));
   collectCards(element, document).forEach((card) => {
     if (!card.body.length && !card.image) return;
-    if (seen.has(card.key)) return;
-    seen.add(card.key);
-    cells.push([card.image || '', card.body]);
+    const existing = byKey.get(card.key);
+    if (!existing || (!hasPrice(existing) && hasPrice(card))) byKey.set(card.key, card);
   });
+  const cells = [...byKey.values()].map((card) => [card.image || '', card.body]);
 
   // desktop carousels on the source (not the mobile/tablet-only ones) become the carousel variant
   const isCarousel = element.matches('.cmp-grid-container--carousel:not(.cmp-grid-container--carousel-mobile-tablet)');

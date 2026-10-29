@@ -109,6 +109,10 @@ function decorateBento(block) {
 }
 
 const CARD_TYPES = ['overlay', 'deal', 'feature'];
+// a price line: a short line with a currency amount (with or without a struck "was" price)
+const PRICE = /[$€£¥]\s?\d/;
+const isPriceLine = (el) => el.tagName === 'P'
+  && (el.querySelector('del, s') || (PRICE.test(el.textContent) && el.textContent.trim().length <= 40));
 const HEADING_TAGS = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 const isHeading = (el) => HEADING_TAGS.includes(el.tagName);
 
@@ -158,7 +162,7 @@ function classifyCard(li) {
   children.forEach((el) => {
     if (el.classList.contains('button-container')) {
       el.classList.add('cards-card-cta');
-    } else if (el.tagName === 'P' && el.querySelector('del, s')) {
+    } else if (isPriceLine(el)) {
       decoratePrice(el);
     } else if (!isHeading(el)) {
       hasDescription = true;
