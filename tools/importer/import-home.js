@@ -7,6 +7,7 @@ import columnsParser from "./parsers/columns.js";
 import formParser from "./parsers/form.js";
 import princessCleanupTransformer from "./transformers/princess-cleanup.js";
 import princessSectionsTransformer from "./transformers/princess-sections.js";
+import loadLivePrices from "./utils/live-prices.js";
 
 const PAGE_TEMPLATE = {
   "name": "home",
@@ -66,6 +67,7 @@ const PAGE_TEMPLATE = {
       "id": "rc6",
       "name": "2028 savings - destination deals",
       "selector": [
+        "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.cmp-title-subtitle-block__headline):has(.dynamic-pricing a[href*=\"promos=KHS\"])",
         "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(9)"
       ],
       "style": "cream",
@@ -94,6 +96,7 @@ const PAGE_TEMPLATE = {
       "id": "rc9",
       "name": "Exclusive offers",
       "selector": [
+        "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.teaser.cmp-teaser--image-ratio-4x5)",
         "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(13)"
       ],
       "style": null,
@@ -108,6 +111,7 @@ const PAGE_TEMPLATE = {
       "id": "rc10",
       "name": "Secure your 2028 cruise promo",
       "selector": [
+        "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.cmp-grid-microsite-container--two-col-right-wider)",
         "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(14)"
       ],
       "style": "dark-blue",
@@ -151,6 +155,7 @@ const PAGE_TEMPLATE = {
       "id": "rc13",
       "name": "Princess Plus and Premier packages banner",
       "selector": [
+        "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.banner a[href*=\"plus-premier\"])",
         "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(17)"
       ],
       "style": null,
@@ -163,6 +168,7 @@ const PAGE_TEMPLATE = {
       "id": "rc14",
       "name": "Your perfect cruise ship awaits",
       "selector": [
+        "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.dynamic-pricing a[href*=\"duration=7_7\"])",
         "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(18)"
       ],
       "style": "cream",
@@ -262,39 +268,6 @@ function findBlocksOnPage(root, template) {
     });
   });
   return pageBlocks;
-}
-
-const sleep = (ms) => new Promise((resolve) => { setTimeout(resolve, ms); });
-
-/**
- * princess.com fetches deal prices only for carousel slides that come into view.
- * Before transforming, bring each visible deal carousel on screen, step through
- * its slides and wait until the loaded prices stop changing.
- */
-async function loadLivePrices(document) {
-  const win = document.defaultView;
-  const priced = () => document.querySelectorAll('#main-content .dynamic-pricing .pricing-main').length;
-  const carousels = [...document.querySelectorAll('#main-content .grid-container.cmp-grid-container--carousel')]
-    .filter((g) => g.offsetParent !== null);
-  for (const carousel of carousels) {
-    carousel.scrollIntoView({ block: 'center' });
-    await sleep(1500);
-    const next = [...carousel.querySelectorAll('.cmp-grid-container--carousel__controls button')].pop();
-    const slides = carousel.querySelectorAll('.dynamic-pricing, .teaser').length;
-    for (let i = 0; next && i < Math.min(slides, 12); i += 1) {
-      next.click();
-      await sleep(400);
-    }
-  }
-  // settle: stop once the priced count is stable for 3s (max ~15s)
-  let last = -1;
-  for (let i = 0; i < 15; i += 1) {
-    const now = priced();
-    if (now === last && i >= 3) break;
-    last = now;
-    await sleep(1000);
-  }
-  win.scrollTo(0, 0);
 }
 
 export default {

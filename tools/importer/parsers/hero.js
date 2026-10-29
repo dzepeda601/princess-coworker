@@ -209,11 +209,60 @@ function parseBanner(element, document) {
   return { bg, text };
 }
 
+function makeVideoLink(document, clipSrc) {
+  if (!clipSrc) return null;
+  const p = document.createElement('p');
+  const a = document.createElement('a');
+  a.href = clipSrc;
+  // the link text becomes the accessible name of the hero's pause control
+  a.textContent = 'Pause background video';
+  p.append(a);
+  return p;
+}
+
+/**
+ * Destination page hero (.hero-composite): video (poster + clip, prepared by cleanup) or
+ * still image, H1 and CTA(s). Primary-style CTAs are authored bold.
+ */
+function parseHeroComposite(element, document) {
+  const still = element.querySelector('[data-video-src]')
+    || element.querySelector('.cmp-hero-composite__img-container img:not(.cmp-video-dam-v2__backdrop--mobile)');
+  const src = usableSrc(still);
+  const bg = src ? makeImg(document, src, still.getAttribute('alt') || '') : null;
+  const videoLink = makeVideoLink(document, still && still.getAttribute('data-video-src'));
+
+  const text = [];
+  const content = element.querySelector('.cmp-hero-composite__content') || element;
+  content.querySelectorAll('h1, h2, h3, h4, h5, h6, p').forEach((el) => {
+    const t = cleanText(el.textContent);
+    if (!t || el.closest('.cmp-hero-composite__cta')) return;
+    const n = document.createElement(/^H\d$/.test(el.tagName) ? 'h1' : 'p');
+    n.textContent = t;
+    text.push(n);
+  });
+  content.querySelectorAll('.cmp-hero-composite__cta a[href]').forEach((a) => {
+    const cta = makeCta(document, a);
+    if (!cta) return;
+    if (a.closest('.cmp-button-v2--style-primary')) {
+      const link = cta.querySelector('a');
+      const strong = document.createElement('strong');
+      link.replaceWith(strong);
+      strong.append(link);
+    }
+    text.push(cta);
+  });
+
+  return { bg, text, videoLink };
+}
+
 export default function parse(element, { document }) {
+  const isComposite = element.matches('.hero-composite') || !!element.querySelector('.cmp-hero-composite');
   const isVeHero = element.matches('.ve-hero-banner') || !!element.querySelector('.cmp-ve-hero-banner');
-  const { bg, text, videoLink } = isVeHero
-    ? parseVeHero(element, document)
-    : parseBanner(element, document);
+  let result;
+  if (isComposite) result = parseHeroComposite(element, document);
+  else if (isVeHero) result = parseVeHero(element, document);
+  else result = parseBanner(element, document);
+  const { bg, text, videoLink } = result;
 
   const cells = [];
   cells.push([videoLink ? [bg, videoLink].filter(Boolean) : (bg || '')]);

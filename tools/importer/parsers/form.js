@@ -34,9 +34,11 @@ export default function parse(element, { document }) {
     [...footnote.children].reverse().forEach((child) => element.after(child));
   }
 
+  // template transformers may point a page's sign-up at another definition (data-excat-form)
+  const definition = element.getAttribute('data-excat-form') || FORM_DEFINITION;
   const link = document.createElement('a');
-  link.href = FORM_DEFINITION;
-  link.textContent = FORM_DEFINITION;
+  link.href = definition;
+  link.textContent = definition;
 
   const cells = [];
   cells.push([link]);

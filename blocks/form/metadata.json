@@ -27,5 +27,6 @@
   "options": [],
   "memberVariantIds": [],
   "usage": "Use for newsletter sign-up, contact and similar forms. Create a form definition sheet (for example an email field plus a SIGN UP submit) and link it from the block.",
-  "reuseGuidance": "Has no options. Change fields in the definition sheet, not in the block."
+  "reuseGuidance": "Has no options. Change fields in the definition sheet, not in the block.",
+  "usageStats": { "pagesUsing": ["/cruise-destinations/mediterranean-cruises"], "reuseCount": 1, "lastUsed": "2026-10-29" }
 }

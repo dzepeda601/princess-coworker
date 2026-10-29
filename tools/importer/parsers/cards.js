@@ -13,7 +13,10 @@
  *    keeping the first occurrence.
  *  - .destination-grid: a.cmp-destination-grid__card-cta-link tiles (visible + hidden
  *    "View All" list): image + label linked to the destination.
- *  - .microsite-carousel-two: slides (skip .is-clone).
+ *  - .microsite-carousel-two: slides (skip .is-clone); heading/intro in
+ *    .cmp-microsite-carousel-two__wrapper__content is kept as default content before the block.
+ *  - .grid-container teaser grids: teaser cards (read-time text kept, link-style CTAs not bolded).
+ *  - multi-line <p> deal titles are joined into one H3.
  */
 
 function cleanText(text) {
@@ -126,10 +129,13 @@ function buildPrice(document, p) {
 
 function parseDynamicPricing(document, item) {
   const imgEl = firstUsableImg(item, '.cmp-dynamic-pricing__image img, img');
-  const titleEl = [...item.querySelectorAll(
+  const titleEls = [...item.querySelectorAll(
     '.cmp-dynamic-pricing__title h1, .cmp-dynamic-pricing__title h2, .cmp-dynamic-pricing__title h3, .cmp-dynamic-pricing__title h4, .cmp-dynamic-pricing__title p',
-  )].find((el) => cleanText(el.textContent));
-  const title = titleEl ? cleanText(titleEl.textContent) : '';
+  )].filter((el) => cleanText(el.textContent));
+  // a title typed as several lines of <p> ("Sail from" / "Southampton") is one heading
+  const title = titleEls.length > 1 && titleEls.every((el) => el.tagName === 'P')
+    ? titleEls.map((el) => cleanText(el.textContent)).join(' ')
+    : cleanText((titleEls[0] || {}).textContent);
   const a = item.querySelector('.cmp-dynamic-pricing__button a[href]') || item.querySelector('a[href]');
   const href = a ? a.getAttribute('href') : '';
 
@@ -174,8 +180,16 @@ function parseTeaser(document, item) {
     if (ps.length) ps.forEach((p) => body.push(makeParagraph(document, cleanText(p.textContent))));
     else if (cleanText(desc.textContent)) body.push(makeParagraph(document, cleanText(desc.textContent)));
   }
+  // read time etc. typed next to the CTA ("7 Min")
+  item.querySelectorAll('.cmp-teaser__action-container .cmp-text p').forEach((p) => {
+    const t = cleanText(p.textContent);
+    if (t) body.push(makeParagraph(document, t));
+  });
   const cta = makeCta(document, a, '.cmp-button-v2__text');
-  if (cta) {
+  // link/tertiary-style CTAs stay plain links
+  const isTextLink = a && a.closest('.cmp-button-v2--style-link, .cmp-button-v2--style-tertiary');
+  if (cta && isTextLink) body.push(cta);
+  else if (cta) {
     // teaser CTAs are filled (primary) buttons on the source: bold marks primary in EDS
     const link = cta.querySelector('a');
     const strong = document.createElement('strong');
@@ -263,9 +277,27 @@ export default function parse(element, { document }) {
   });
   const cells = [...byKey.values()].map((card) => [card.image || '', card.body]);
 
-  // desktop carousels on the source (not the mobile/tablet-only ones) become the carousel variant
-  const isCarousel = element.matches('.cmp-grid-container--carousel:not(.cmp-grid-container--carousel-mobile-tablet)');
+  // desktop carousels on the source (not the mobile/tablet-only ones) become the carousel variant;
+  // template transformers can also request it via data-excat-block-options="carousel"
+  const options = (element.getAttribute('data-excat-block-options') || '').split(',').map((o) => o.trim());
+  const isCarousel = options.includes('carousel')
+    || element.matches('.cmp-grid-container--carousel:not(.cmp-grid-container--carousel-mobile-tablet)');
   const block = WebImporter.Blocks.createBlock(document, { name: isCarousel ? 'Cards (carousel)' : 'cards', cells });
+  // microsite carousels carry their section heading (and intro) inside the component
+  const intro = [];
+  element.querySelectorAll('.cmp-microsite-carousel-two__wrapper__content').forEach((wrap) => {
+    wrap.querySelectorAll('h1, h2, h3, h4, h5, h6, p').forEach((n) => {
+      const t = cleanText(n.textContent);
+      if (!t) return;
+      if (/^H\d$/.test(n.tagName)) {
+        const h2 = document.createElement('h2');
+        h2.textContent = t;
+        intro.push(h2);
+      } else {
+        intro.push(makeParagraph(document, t));
+      }
+    });
+  });
   // the destination grid carries its section heading inside the component: keep it as default content
   const gridTitle = element.querySelector('.cmp-destination-grid__title');
   if (gridTitle && cleanText(gridTitle.textContent)) {
@@ -273,6 +305,6 @@ export default function parse(element, { document }) {
     h2.textContent = cleanText(gridTitle.textContent);
     element.replaceWith(h2, block);
   } else {
-    element.replaceWith(block);
+    element.replaceWith(...intro, block);
   }
 }

@@ -30,5 +30,6 @@
   "options": [],
   "memberVariantIds": [],
   "usage": "Use for text-plus-image promo panels and other two-column layouts. Put section colours (such as dark-blue) in section metadata, not on the block.",
-  "reuseGuidance": "Has no options. Spacing and background come from the section style."
+  "reuseGuidance": "Has no options. Spacing and background come from the section style.",
+  "usageStats": { "pagesUsing": ["/cruise-destinations/mediterranean-cruises"], "reuseCount": 1, "lastUsed": "2026-10-29" }
 }

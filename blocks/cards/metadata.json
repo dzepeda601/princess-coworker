@@ -30,5 +30,6 @@
   ],
   "memberVariantIds": [],
   "usage": "Use for any set of repeating items such as deal, destination, port, ship, offer or service cards. Author one row per card.",
-  "reuseGuidance": "Default cards cover image + title + price/description + CTA. The block has no carousel behaviour: carousel content renders as a grid. For an image tile with an overlaid label, author only a heading (with link) in the body. Bold the CTA link for a primary pink button."
+  "reuseGuidance": "Default cards cover image + title + price/description + CTA. The block has no carousel behaviour: carousel content renders as a grid. For an image tile with an overlaid label, author only a heading (with link) in the body. Bold the CTA link for a primary pink button.",
+  "usageStats": { "pagesUsing": ["/cruise-destinations/mediterranean-cruises"], "reuseCount": 1, "lastUsed": "2026-10-29" }
 }

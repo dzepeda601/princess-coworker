@@ -58,6 +58,7 @@
           "id": "rc6",
           "name": "2028 savings - destination deals",
           "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.cmp-title-subtitle-block__headline):has(.dynamic-pricing a[href*=\"promos=KHS\"])",
             "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(9)"
           ],
           "style": "cream",
@@ -86,6 +87,7 @@
           "id": "rc9",
           "name": "Exclusive offers",
           "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.teaser.cmp-teaser--image-ratio-4x5)",
             "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(13)"
           ],
           "style": null,
@@ -100,6 +102,7 @@
           "id": "rc10",
           "name": "Secure your 2028 cruise promo",
           "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.cmp-grid-microsite-container--two-col-right-wider)",
             "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(14)"
           ],
           "style": "dark-blue",
@@ -143,6 +146,7 @@
           "id": "rc13",
           "name": "Princess Plus and Premier packages banner",
           "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.banner a[href*=\"plus-premier\"])",
             "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(17)"
           ],
           "style": null,
@@ -155,6 +159,7 @@
           "id": "rc14",
           "name": "Your perfect cruise ship awaits",
           "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:not(.aem-GridColumn--default--hide):has(.dynamic-pricing a[href*=\"duration=7_7\"])",
             "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(18)"
           ],
           "style": "cream",
@@ -221,6 +226,269 @@
           "blocks": [],
           "defaultContent": [
             ".modal"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cruise-destinations",
+      "urls": [
+        "https://www.princess.com/cruise-destinations/mediterranean-cruises"
+      ],
+      "representativeUrl": "https://www.princess.com/cruise-destinations/mediterranean-cruises",
+      "description": "Princess Cruises destination landing pages: video hero, deal and feature card carousels, newsletter sign-up, text + image-pair columns, destination tiles, banner, port-of-call tabs, FAQ accordion, blog cards",
+      "blocks": [
+        {
+          "name": "hero",
+          "instances": [
+            "div.hero-composite",
+            ".banner"
+          ]
+        },
+        {
+          "name": "cards",
+          "instances": [
+            ".grid-container.cmp-grid-container--carousel",
+            ".destination-grid",
+            ".microsite-carousel-two",
+            ".grid-container.cmp-grid-container--3col-4"
+          ]
+        },
+        {
+          "name": "columns",
+          "instances": [
+            ".column-container",
+            ".grid-container.cmp-grid-container--2col-5-6"
+          ]
+        },
+        {
+          "name": "form",
+          "instances": [
+            ".microsites-sign-up-form"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".tabs-v2"
+          ]
+        },
+        {
+          "name": "faq",
+          "instances": [
+            ".accordion"
+          ]
+        }
+      ],
+      "urlPattern": "/cruise-destinations/*",
+      "sections": [
+        {
+          "id": "rc4",
+          "name": "Hero - Mediterranean Cruises for 2026, 2027 & 2028",
+          "selector": [
+            "#main-content > div.aem-Grid > div.hero-composite",
+            "#main-content div.hero-composite"
+          ],
+          "style": null,
+          "blocks": [
+            "hero"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc9",
+          "name": "Book your Mediterranean adventure (deal carousel)",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.grid-container.cmp-grid-container--carousel .dynamic-pricing)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__content",
+            ".text .cmp-text"
+          ]
+        },
+        {
+          "id": "rc10",
+          "name": "Sign up for $50 onboard credit",
+          "selector": [
+            "#main-content > div.aem-Grid > div.experiencefragment:has(.cmp-experiencefragment--sign-up)",
+            "#main-content > div.aem-Grid > div:has(.microsites-sign-up-form)"
+          ],
+          "style": "light-blue",
+          "blocks": [
+            "form"
+          ],
+          "defaultContent": [
+            ".cmp-ve-sign-up-form__title",
+            ".cmp-ve-sign-up-form__footnote"
+          ]
+        },
+        {
+          "id": "rc11",
+          "name": "Experience the cuisine and culture",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(> .cmp-section > .cmp-section__container > div > .column-container)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "columns"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc12",
+          "name": "Cruise destinations you'll love",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.destination-grid)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-destination-grid__title"
+          ]
+        },
+        {
+          "id": "rc13",
+          "name": "Now Booking: 2028 Europe Voyages banner",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.banner)",
+            "#main-content > div.aem-Grid > div.microsites-section.cmp-section--background-color-princess-sand-2"
+          ],
+          "style": null,
+          "blocks": [
+            "hero"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc14",
+          "name": "Best Mediterranean cruise options",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.cmp-microsite-carousel-two__container__small-non-alternating):not(:has(.experiencefragment))"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-microsite-carousel-two__wrapper__content"
+          ]
+        },
+        {
+          "id": "rc15",
+          "name": "Mediterranean cruise ports of call",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.tabs-v2)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__content"
+          ]
+        },
+        {
+          "id": "rc16",
+          "name": "Why cruise the Mediterranean",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section.cmp-section--background-color-princess-blue:has(.column-container)"
+          ],
+          "style": "dark-blue",
+          "blocks": [
+            "cards",
+            "columns"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__content"
+          ]
+        },
+        {
+          "id": "rc17",
+          "name": "Why cruise with Princess",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section.cmp-section--background-color-princess-blue:not(:has(.column-container))"
+          ],
+          "style": "dark-blue",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__content"
+          ]
+        },
+        {
+          "id": "rc18",
+          "name": "All you need to know about Europe",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section.cmp-section--background-color-princess-white:has(.microsite-carousel-two)"
+          ],
+          "style": null,
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-microsite-carousel-two__wrapper__content"
+          ]
+        },
+        {
+          "id": "rc19",
+          "name": "Cruises to the Mediterranean FAQs",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.accordion)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "faq"
+          ],
+          "defaultContent": [
+            ".cmp-title-subtitle-block__headline"
+          ]
+        },
+        {
+          "id": "rc20",
+          "name": "Let Princess get you there",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.experiencefragment .microsite-carousel-two)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-microsite-carousel-two__wrapper__content"
+          ]
+        },
+        {
+          "id": "rc21",
+          "name": "Princess Rewards Visa Card",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section:has(.cmp-content-block)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "columns"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc22",
+          "name": "Cruise deals and promotions",
+          "selector": [
+            "#main-content > div.aem-Grid > div.microsites-section.cmp-section--background-color-princess-sand:has(.column-container)"
+          ],
+          "style": "sand",
+          "blocks": [
+            "columns",
+            "cards"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__headline"
           ]
         }
       ]

@@ -31,5 +31,6 @@
   ],
   "memberVariantIds": [],
   "usage": "Use once at the top of a page for the main promotional banner. Author the promo copy as real text, not as text baked into an image.",
-  "reuseGuidance": "Use the plain hero for photo banners. The rust/gold/ink options are solid brand-colour backgrounds, mainly for heroes with no image. Do not add a second image unless it is a dark-theme alternate."
+  "reuseGuidance": "Use the plain hero for photo banners. The rust/gold/ink options are solid brand-colour backgrounds, mainly for heroes with no image. Do not add a second image unless it is a dark-theme alternate.",
+  "usageStats": { "pagesUsing": ["/cruise-destinations/mediterranean-cruises"], "reuseCount": 1, "lastUsed": "2026-10-29" }
 }
