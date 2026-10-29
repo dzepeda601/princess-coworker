@@ -227,6 +227,51 @@ function decorateDefault(block) {
   block.replaceChildren(ul);
 }
 
+/**
+ * Carousel variant: the card list becomes a horizontally scrolling, snapping
+ * track with previous/next arrows. All cards stay in the DOM and in tab order
+ * (focus scrolls a card into view), so the arrows are a pointer convenience only.
+ * @param {Element} block decorated cards block
+ */
+function decorateCarousel(block) {
+  const ul = block.querySelector(':scope > ul');
+  if (!ul) return;
+
+  const viewport = createTag('div', { class: 'cards-carousel-viewport', tabindex: '0', role: 'region' });
+  const heading = block.closest('.section')?.querySelector('h2[id]');
+  if (heading) viewport.setAttribute('aria-labelledby', heading.id);
+  viewport.append(ul);
+
+  const step = () => {
+    const card = ul.firstElementChild;
+    const gap = parseFloat(getComputedStyle(ul).columnGap) || 0;
+    return card ? card.getBoundingClientRect().width + gap : viewport.clientWidth;
+  };
+  const go = (dir) => {
+    const max = viewport.scrollWidth - viewport.clientWidth - 1;
+    let left = viewport.scrollLeft + dir * step();
+    // wrap around at either end, as the source carousel does
+    if (dir > 0 && viewport.scrollLeft >= max) left = 0;
+    if (dir < 0 && viewport.scrollLeft <= 0) left = max + 1;
+    viewport.scrollTo({ left, behavior: 'smooth' });
+  };
+  const arrow = (dir) => {
+    const button = createTag('button', {
+      type: 'button',
+      class: `cards-carousel-arrow cards-carousel-${dir > 0 ? 'next' : 'prev'}`,
+      tabindex: '-1',
+      'aria-hidden': 'true',
+    });
+    button.addEventListener('click', () => go(dir));
+    return button;
+  };
+
+  block.replaceChildren(arrow(-1), viewport, arrow(1));
+  // arrows only make sense while the cards overflow the viewport
+  const update = () => block.classList.toggle('cards-carousel-static', viewport.scrollWidth <= viewport.clientWidth + 1);
+  new ResizeObserver(update).observe(viewport);
+}
+
 export default async function decorate(block) {
   if (block.classList.contains('links')) {
     await decorateLinks(block);
@@ -234,5 +279,6 @@ export default async function decorate(block) {
     decorateBento(block);
   } else {
     decorateDefault(block);
+    if (block.classList.contains('carousel')) decorateCarousel(block);
   }
 }

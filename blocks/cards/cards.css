@@ -490,3 +490,112 @@ main .cards .cards-card-overlay a:focus-visible::before {
     max-height: 300px;
   }
 }
+
+/* ==========================================================================
+   Carousel variant – snapping horizontal track with prev/next arrows
+   (source: princess.com deal carousels, 3 cards per view at desktop)
+   ========================================================================== */
+
+.cards.carousel {
+  --carousel-gap: 20px;
+  --carousel-per-view: 1.15;
+
+  position: relative;
+  container-type: inline-size;
+}
+
+.cards.carousel .cards-carousel-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cards.carousel .cards-carousel-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.cards.carousel .cards-carousel-viewport:focus-visible {
+  outline: 2px solid var(--princess-focus);
+  outline-offset: 4px;
+}
+
+.cards.carousel .cards-carousel-viewport > ul {
+  display: grid;
+  grid-auto-columns: calc((100% - (var(--carousel-per-view) - 1) * var(--carousel-gap)) / var(--carousel-per-view));
+  grid-auto-flow: column;
+  gap: var(--carousel-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cards.carousel .cards-carousel-viewport > ul > li {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  color: var(--princess-ink);
+  scroll-snap-align: start;
+}
+
+/* arrows: pink discs centred on the card images (image ratio 296/366) */
+.cards.carousel .cards-carousel-arrow {
+  position: absolute;
+  top: calc((100cqi - (var(--carousel-per-view) - 1) * var(--carousel-gap)) / var(--carousel-per-view) * 0.618);
+  z-index: 1;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+  padding: 0;
+  border: 4px solid var(--princess-white);
+  border-radius: 50%;
+  background: var(--princess-pink);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.2s;
+}
+
+.cards.carousel .cards-carousel-arrow:hover {
+  background: var(--princess-pink-dark);
+}
+
+.cards.carousel .cards-carousel-prev {
+  left: 0;
+}
+
+.cards.carousel .cards-carousel-next {
+  left: 100%;
+}
+
+/* chevron */
+.cards.carousel .cards-carousel-arrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-top: 3px solid var(--princess-white);
+  border-right: 3px solid var(--princess-white);
+  transform: translate(-65%, -50%) rotate(45deg);
+}
+
+.cards.carousel .cards-carousel-prev::before {
+  transform: translate(-35%, -50%) rotate(-135deg);
+}
+
+.cards.carousel.cards-carousel-static .cards-carousel-arrow {
+  display: none;
+}
+
+@media (width >= 600px) {
+  .cards.carousel {
+    --carousel-per-view: 2;
+  }
+}
+
+@media (width >= 900px) {
+  .cards.carousel {
+    --carousel-per-view: 3;
+  }
+}

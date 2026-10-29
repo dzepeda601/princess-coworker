@@ -96,7 +96,7 @@ function makeCta(document, a, labelSelector) {
   return p;
 }
 
-/** "From <del>$1,060</del> $529 per person" from a dynamic-pricing pricing paragraph. */
+/** "From <s>$1,060</s> $529 per person" from a dynamic-pricing pricing paragraph (DA keeps <s>, not <del>). */
 function buildPrice(document, p) {
   const out = document.createElement('p');
   const parts = [];
@@ -108,9 +108,9 @@ function buildPrice(document, p) {
       const t = cleanText(node.textContent);
       if (!t) return;
       if (node.classList.contains('pricing-strikethrough') || node.tagName === 'DEL' || node.tagName === 'S') {
-        const del = document.createElement('del');
-        del.textContent = t;
-        parts.push(del);
+        const strike = document.createElement('s');
+        strike.textContent = t;
+        parts.push(strike);
       } else {
         parts.push(t);
       }
@@ -262,7 +262,9 @@ export default function parse(element, { document }) {
     cells.push([card.image || '', card.body]);
   });
 
-  const block = WebImporter.Blocks.createBlock(document, { name: 'cards', cells });
+  // desktop carousels on the source (not the mobile/tablet-only ones) become the carousel variant
+  const isCarousel = element.matches('.cmp-grid-container--carousel:not(.cmp-grid-container--carousel-mobile-tablet)');
+  const block = WebImporter.Blocks.createBlock(document, { name: isCarousel ? 'Cards (carousel)' : 'cards', cells });
   // the destination grid carries its section heading inside the component: keep it as default content
   const gridTitle = element.querySelector('.cmp-destination-grid__title');
   if (gridTitle && cleanText(gridTitle.textContent)) {
