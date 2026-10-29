@@ -566,10 +566,14 @@ main .cards .cards-card-overlay a:focus-visible::before {
 
 .cards.carousel .cards-carousel-prev {
   left: 0;
+  transform: translate(-25%, -50%);
 }
 
 .cards.carousel .cards-carousel-next {
   left: 100%;
+
+  /* small screens: keep the arrow inside the page gutter */
+  transform: translate(-75%, -50%);
 }
 
 /* chevron */
@@ -602,5 +606,10 @@ main .cards .cards-card-overlay a:focus-visible::before {
 @media (width >= 900px) {
   .cards.carousel {
     --carousel-per-view: 3;
+  }
+
+  .cards.carousel .cards-carousel-prev,
+  .cards.carousel .cards-carousel-next {
+    transform: translate(-50%, -50%);
   }
 }

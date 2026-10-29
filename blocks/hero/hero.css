@@ -157,6 +157,9 @@ main .section .hero-wrapper {
 }
 
 .hero h1 {
+  /* long words (e.g. "Mediterranean") must not overflow narrow screens */
+  overflow-wrap: anywhere;
+  hyphens: auto;
   margin: 0 0 16px;
   color: var(--princess-blue);
   font-family: var(--heading-font-family);

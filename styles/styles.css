@@ -297,6 +297,9 @@ h6 {
   font-weight: 700;
   line-height: var(--heading-line-height);
   scroll-margin: 40px;
+
+  /* long words (e.g. "Mediterranean" at 48px) wrap instead of widening the page */
+  overflow-wrap: break-word;
 }
 
 h1 {

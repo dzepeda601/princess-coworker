@@ -232,15 +232,17 @@ main .section .tabs {
   }
 
   .tabs .tabs-list {
+    flex-wrap: wrap;
     justify-content: center;
+    max-width: none;
     overflow-x: visible;
     padding: 0 var(--content-padding-inline);
-    gap: var(--space-l);
+    gap: 0 var(--space-m);
     margin-bottom: var(--space-xl);
   }
 
   .tabs .tabs-list button {
-    padding: 22px 45px;
+    padding: 22px 20px;
   }
 
   .tabs .tabs-wrapper .section h2 {
