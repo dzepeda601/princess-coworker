@@ -1,0 +1,232 @@
+{
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://www.princess.com/"
+      ],
+      "representativeUrl": "https://www.princess.com/",
+      "description": "Princess Cruises homepage: hero, promo card carousels, two-column promos, newsletter sign-up, destination grid, feature cards",
+      "blocks": [
+        {
+          "name": "hero",
+          "instances": [
+            "div.ve-hero-banner",
+            ".banner"
+          ]
+        },
+        {
+          "name": "cards",
+          "instances": [
+            ".grid-container.cmp-grid-container--carousel",
+            ".destination-grid",
+            ".microsite-carousel-two"
+          ]
+        },
+        {
+          "name": "columns",
+          "instances": [
+            ".column-container",
+            ".grid-container.cmp-grid-microsite-container--two-col-right-wider"
+          ]
+        },
+        {
+          "name": "form",
+          "instances": [
+            ".microsites-sign-up-form"
+          ]
+        }
+      ],
+      "urlPattern": "/",
+      "sections": [
+        {
+          "id": "rc4",
+          "name": "Hero - Early Booking Bonus",
+          "selector": [
+            "#main-content div.ve-hero-banner",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.ve-hero-banner.cmp-ve-hero-banner--large.cmp-ve-hero-banner--background-color-primary-white.cmp-ve-hero-banner--center-left.cmp-ve-hero-banner--vertical-align--center.cmp-ve-hero-banner--alignment-left.cmp-ve-hero-banner__content-background-color--blurred.cmp-ve-hero-banner__content-background-color-mobile--blurred.cmp-ve-hero-banner--no-transition.cmp-ve-hero-banner--aspectratio-2-3.cmp-ve-hero-banner--mobile-center.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": null,
+          "blocks": [
+            "hero"
+          ],
+          "defaultContent": [
+            "[class*=\"capsule_block_values\"]"
+          ]
+        },
+        {
+          "id": "rc6",
+          "name": "2028 savings - destination deals",
+          "selector": [
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(9)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__headline"
+          ]
+        },
+        {
+          "id": "rc8",
+          "name": "New at Princess - Royal Princess Sanctuary Collection",
+          "selector": [
+            "div.microsites-section.cmp-section--rounded-top-left-edge-large",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--rounded-top-left-edge-large.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": null,
+          "blocks": [
+            "columns",
+            "cards"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc9",
+          "name": "Exclusive offers",
+          "selector": [
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--padding-top-0.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(13)"
+          ],
+          "style": null,
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".text"
+          ]
+        },
+        {
+          "id": "rc10",
+          "name": "Secure your 2028 cruise promo",
+          "selector": [
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(14)"
+          ],
+          "style": "dark-blue",
+          "blocks": [
+            "columns"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc11",
+          "name": "Find cruises near you",
+          "selector": [
+            "div.microsites-section.cmp-section--padding-bottom-mobile-small",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--padding-top-0.cmp-section--padding-bottom-0.cmp-section--padding-bottom-mobile-small.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": null,
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".text"
+          ]
+        },
+        {
+          "id": "rc12",
+          "name": "Newsletter sign-up",
+          "selector": [
+            "div.microsites-section:has(.cmp-experiencefragment--sign-up)",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.cmp-section--padding-top-0.cmp-section--padding-bottom-0.cmp-section--padding-bottom-mobile-0.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": "light-blue",
+          "blocks": [
+            "form"
+          ],
+          "defaultContent": [
+            ".cmp-ve-sign-up-form__title",
+            ".cmp-ve-sign-up-form__footnote"
+          ]
+        },
+        {
+          "id": "rc13",
+          "name": "Princess Plus and Premier packages banner",
+          "selector": [
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(17)"
+          ],
+          "style": null,
+          "blocks": [
+            "hero"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc14",
+          "name": "Your perfect cruise ship awaits",
+          "selector": [
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(18)"
+          ],
+          "style": "cream",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".title-subtitle-block .cmp-title-subtitle-block__headline"
+          ]
+        },
+        {
+          "id": "rc15",
+          "name": "Sail away to 330+ destinations",
+          "selector": [
+            "div.microsites-section:has(.destination-grid)",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(19)"
+          ],
+          "style": null,
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-destination-grid__title"
+          ]
+        },
+        {
+          "id": "rc16",
+          "name": "The Princess difference",
+          "selector": [
+            "div.microsites-section.cmp-section--background-color-princess-sand",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-sand.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": "sand",
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": [
+            ".cmp-title-subtitle-block__content",
+            ".accolades-v2-html-comp"
+          ]
+        },
+        {
+          "id": "rc17",
+          "name": "Plan your cruise services",
+          "selector": [
+            "#main-content > div.aem-Grid > div.cmp-section--background-color-princess-sand ~ div.microsites-section:has(.microsite-carousel-two)",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.microsites-section.cmp-section--background-color-princess-white.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(21)"
+          ],
+          "style": null,
+          "blocks": [
+            "cards"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc19",
+          "name": "Promotions terms note",
+          "selector": [
+            "#main-content > div.aem-Grid > div:has(.cmp-modal__trigger-text)",
+            "#main-content div.section.cmp-section--alignment-left",
+            "#main-content > div.aem-Grid.aem-Grid--12.aem-Grid--default--12 > div.section.cmp-section--alignment-left.cmp-section--background-color-white.aem-GridColumn.aem-GridColumn--default--12"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".modal"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "projectType": "da"
+  }
+}

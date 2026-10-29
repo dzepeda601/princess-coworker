@@ -1,0 +1,34 @@
+{
+  "variantName": "columns",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Side-by-side layout of two or more content columns, typically text next to an image",
+    "layout": "Columns stack on mobile in authored order; from 900px they sit side by side, vertically centred, text 40% / image 60%. An image column holding two pictures shows them side by side (portrait 2:3, last one rounded bottom-right). A single image is cropped 3:2 with a rounded bottom-left corner. Inside a dark-blue section the title and copy are smaller and inset.",
+    "behavior": [
+      "Adds `columns-<n>-cols` to the block, where n is the number of cells in the first row.",
+      "A cell whose only content is a picture (or a paragraph of pictures) gets `columns-img-col`; with two or more pictures they are lifted out of the paragraph and the cell also gets `columns-img-group`.",
+      "A short paragraph directly above a heading at the start of a cell gets `columns-eyebrow` (small uppercase label).",
+      "Two or more consecutive button links in a cell are grouped in `.columns-buttons`; every button after the first that is not bold becomes a `tertiary` text link with an arrow."
+    ]
+  },
+  "contentPattern": {
+    "structure": "one or more rows, each row with one cell per column; cells hold free content (headings, paragraphs, links, images)",
+    "cells": [
+      {
+        "name": "column",
+        "content": "any default content: heading, paragraphs, links, picture(s)",
+        "required": true
+      }
+    ],
+    "notes": [
+      "Use the same number of cells in every row; the column count is taken from the first row.",
+      "Put several pictures in one cell (nothing else) to show an image pair.",
+      "Put two links on separate lines to get a button plus a text link."
+    ]
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "usage": "Use for text-plus-image promo panels and other two-column layouts. Put section colours (such as dark-blue) in section metadata, not on the block.",
+  "reuseGuidance": "Has no options. Spacing and background come from the section style."
+}

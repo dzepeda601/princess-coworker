@@ -3,57 +3,11 @@
 /* add global styles that can be loaded post LCP here */
 
 /* ==========================================================================
-  Scroll reveal – sections below fold animate in as they enter the viewport.
-  JS in scripts.js adds .will-reveal to off-screen sections, then .revealed
-  when they intersect. Only runs when prefers-reduced-motion allows it.
-  ========================================================================== */
-
-@media (prefers-reduced-motion: no-preference) {
-  :is(main, article.article-body) > .section.will-reveal:not(.revealed) {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
-      transform 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
-  }
-
-  :is(main, article.article-body) > .section.will-reveal.revealed {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
-      transform 0.8s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
-  }
-
-  /* Stagger children inside revealed sections for cascading entrance */
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :is(h1, h2, h3, h4, p, .block, .button-container, picture) {
-    animation: content-enter 0.7s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both;
-  }
-
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(1) { animation-delay: 0.05s; }
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(2) { animation-delay: 0.1s; }
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(3) { animation-delay: 0.15s; }
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(4) { animation-delay: 0.2s; }
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(5) { animation-delay: 0.25s; }
-  :is(main, article.article-body) > .section.will-reveal.revealed > div > :nth-child(6) { animation-delay: 0.3s; }
-
-  @keyframes content-enter {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-}
-
-/* ==========================================================================
   Post-LCP link transitions
   ========================================================================== */
 
 a:any-link {
-  transition: color 0.25s, text-decoration-color 0.25s;
+  transition: color 0.25s, text-underline-offset 0.3s;
 }
 
 /* ==========================================================================
@@ -109,21 +63,6 @@ a:any-link {
   }
 }
 
-/* H2 accent — thin brand-gradient bar beneath h2 in plain content sections */
-:is(main, article.article-body) > .section:not(.hero-container, .gradient, .ink, .rust) h2::after {
-  content: '';
-  display: block;
-  width: 2.5rem;
-  height: 2px;
-  margin-top: 0.35em;
-  background: var(--gradient-brand);
-  border-radius: 1px;
-}
-
-:is(main, article.article-body) > .section.center:not(.hero-container, .gradient, .ink, .rust) h2::after {
-  margin-inline: auto;
-}
-
 /* ==========================================================================
   Header scroll shadow — appears after user scrolls past hero
   ========================================================================== */
@@ -165,11 +104,10 @@ header .nav-wrapper.scrolled {
   border-radius: 8px;
 }
 
-/* Focus-visible on all interactive elements: consistent brand ring */
+/* Focus-visible on all interactive elements: Princess focus ring */
 :is(main, article.article-body) :is(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-gold);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 2px solid var(--princess-focus, #007cdb);
+  outline-offset: 2px;
 }
 
 .code-block {

@@ -1,0 +1,34 @@
+{
+  "variantName": "cards",
+  "baseBlock": "cards",
+  "canonicalModel": "collection",
+  "visualCharacteristics": {
+    "purpose": "Responsive grid of content cards, each with an optional image and a body of heading, text and link",
+    "layout": "1 column on mobile, 2 from 600px, 3 from 900px; sets of 4/8 cards use 2 columns from 900px and 4 from 1200px. Overlay tiles extend to the content edges (8px gap, 32px from 900px). Cards have no border or background.",
+    "behavior": [
+      "Each authored row becomes one card (`ul > li` with `.cards-card-image` and `.cards-card-body`).",
+      "Cards are classified by content: body with only a heading -> `.cards-card-overlay` (square image tile with the heading link as a white label, whole tile clickable); heading + optional price (paragraph with strikethrough) + CTA -> `.cards-card-deal` (296/366 image, outline pill CTA); heading + description -> `.cards-card-feature` (image at its authored ratio, text-link CTA with arrow).",
+      "The CTA style follows authoring emphasis when present (bold = primary pink pill, italic = secondary outline); otherwise it defaults by card type.",
+      "The block gets `.cards-layout-{type}` when all cards share a type, and `.cards-cols-4` for 4/8/... cards.",
+      "Same-origin raster images are re-rendered as optimized pictures (750px width)."
+    ]
+  },
+  "contentPattern": {
+    "structure": "image cell (picture) + body cell (heading, paragraphs, optional link); a single cell holding image and text also works",
+    "item": [
+      { "name": "image", "content": "picture", "required": false },
+      { "name": "body", "content": "heading (h2-h4), paragraphs, link", "required": true }
+    ],
+    "variants": {
+      "links": "Block holds only links to site pages; cards are built from query-index.json (image, title, description) instead of authored rows.",
+      "bento": "Rows are authored as in the default; the first card is featured (wider, rust background), the first paragraph of each card is styled as a tag, and text-only cards span double width on large screens."
+    }
+  },
+  "options": [
+    { "class": "links", "label": "Links (from query index)" },
+    { "class": "bento", "label": "Bento grid" }
+  ],
+  "memberVariantIds": [],
+  "usage": "Use for any set of repeating items such as deal, destination, port, ship, offer or service cards. Author one row per card.",
+  "reuseGuidance": "Default cards cover image + title + price/description + CTA. The block has no carousel behaviour: carousel content renders as a grid. For an image tile with an overlaid label, author only a heading (with link) in the body. Bold the CTA link for a primary pink button."
+}

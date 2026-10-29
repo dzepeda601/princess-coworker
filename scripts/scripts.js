@@ -43,13 +43,12 @@ function isExperimentationEnabled() {
     || Object.keys(getAllMetadata('audience')).length;
 }
 
-const THEME_STORAGE_KEY = 'demo-theme';
-
-function applyTheme(theme) {
-  let t = theme ?? (() => { try { return localStorage.getItem(THEME_STORAGE_KEY); } catch (e) { return null; } })();
-  if (t !== 'light' && t !== 'dark') {
-    t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
+/**
+ * The Princess brand has no dark mode: always apply the light scheme,
+ * regardless of stored preference, OS setting or aem-theme-change events.
+ */
+function applyTheme() {
+  const t = 'light';
   document.documentElement.dataset.theme = t;
   document.body.classList.remove('light-scheme', 'dark-scheme');
   document.body.classList.add(`${t}-scheme`);
@@ -167,12 +166,55 @@ async function inlineColorIcons(scope) {
   });
 }
 
+/**
+ * Applies authored Section Metadata (style classes, data attributes) to its section
+ * and removes the metadata table so it isn't loaded as a block.
+ * @param {Element} main The container element
+ */
+function decorateSectionMetadata(main) {
+  main.querySelectorAll(':scope > .section').forEach((section) => {
+    const sectionMeta = section.querySelector(':scope > div > div.section-metadata');
+    if (!sectionMeta) return;
+    const meta = readBlockConfig(sectionMeta);
+    Object.keys(meta).forEach((key) => {
+      if (key === 'style') {
+        meta.style.split(',').map((s) => toClassName(s.trim())).filter(Boolean)
+          .forEach((s) => section.classList.add(s));
+      } else {
+        section.dataset[toCamelCase(key)] = meta[key];
+      }
+    });
+    const wrapper = sectionMeta.parentElement;
+    sectionMeta.remove();
+    if (!wrapper.children.length) wrapper.remove();
+  });
+}
+
+/**
+ * Prioritizes the first (LCP) image and lazy-loads the rest. Images hosted on
+ * other origins skip createOptimizedPicture, so they would otherwise all load eagerly.
+ * @param {Element} main The container element
+ */
+function prioritizeImages(main) {
+  // fragments are decorated with this too; only the page's own main holds the LCP image
+  const isPageMain = main === document.querySelector('main');
+  main.querySelectorAll('img').forEach((img, i) => {
+    if (i === 0 && isPageMain) {
+      img.fetchPriority = 'high';
+    } else if (!img.hasAttribute('loading')) {
+      img.loading = 'lazy';
+    }
+  });
+}
+
 export function decorateMain(main) {
+  prioritizeImages(main);
   decorateButtons(main);
   decorateIcons(main);
   inlineColorIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionMetadata(main);
   decorateBlocks(main);
   if (document.contains(main)) initPageSchemas();
 }
@@ -318,7 +360,24 @@ function watchForTargetInjectedBlocks(main) {
 }
 
 
+/**
+ * Starts the heading font download before first paint. Its @font-face uses
+ * font-display: optional, so an early fetch decides whether it is used at all.
+ */
+function preloadHeadingFont() {
+  const href = `${window.hlx.codeBasePath}/fonts/eb-garamond.woff2`;
+  if (document.head.querySelector(`link[rel="preload"][href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'font';
+  link.type = 'font/woff2';
+  link.crossOrigin = '';
+  link.href = href;
+  document.head.append(link);
+}
+
 async function loadEager(doc) {
+  preloadHeadingFont();
   getLocale();
   decorateTemplateAndTheme();
   applyTheme();
@@ -409,25 +468,6 @@ async function loadLazy(doc) {
   loadFooter(footerEl);
   if (!IS_EDITOR) await martechLazy();
 
-  /* Scroll reveal: sections below the viewport animate in as they enter */
-  if (main && 'IntersectionObserver' in window) {
-    const vH = window.innerHeight;
-    const revealSections = [...main.querySelectorAll('.section')].filter((s) => {
-      const { top } = s.getBoundingClientRect();
-      return top > vH;
-    });
-    if (revealSections.length) {
-      revealSections.forEach((s) => s.classList.add('will-reveal'));
-      const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(({ target, isIntersecting }) => {
-          if (!isIntersecting) return;
-          target.classList.add('revealed');
-          revealObserver.unobserve(target);
-        });
-      }, { rootMargin: '0px 0px -60px 0px' });
-      revealSections.forEach((s) => revealObserver.observe(s));
-    }
-  }
 
   /* Header scroll shadow: add .scrolled class once user scrolls past nav height */
   const navWrapper = doc.querySelector('.nav-wrapper');
@@ -539,7 +579,5 @@ if (!window.hlx?.suppressLoadPage) {
     }, { once: true });
   }
 
-  window.addEventListener('aem-theme-change', (e) => {
-    applyTheme(e.detail?.theme);
-  });
+  window.addEventListener('aem-theme-change', () => applyTheme());
 }

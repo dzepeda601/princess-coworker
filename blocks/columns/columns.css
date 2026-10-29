@@ -1,43 +1,216 @@
+/* Columns – values measured from princess.com (375px and 1440px). */
+
+.columns {
+  --columns-heading-size: 20px;
+  --columns-heading-line: 26px;
+  --columns-heading-spacing: normal;
+  --columns-heading-gap: 6px;
+  --columns-text-size: 18px;
+  --columns-text-line: 27px;
+  --columns-text-gap: 6px;
+  --columns-text-indent: 0;
+  --columns-buttons-offset: 0;
+  --columns-buttons-indent: 0;
+}
+
+/* dark-blue promo band: smaller title, body copy and inset text */
+main > .section.dark-blue .columns {
+  --columns-heading-size: 24px;
+  --columns-heading-line: 28px;
+  --columns-heading-spacing: 1px;
+  --columns-heading-gap: 16px;
+  --columns-text-size: 16px;
+  --columns-text-line: 24px;
+  --columns-text-gap: 32px;
+  --columns-text-indent: 20px;
+}
+
+/* layout: stacked on mobile, authored order */
 .columns > div {
   display: flex;
   flex-direction: column;
-  gap: var(--space-l);
+  gap: var(--space-xl);
 }
 
-.columns img {
-  width: 100%;
-  border-radius: 12px;
+/* text */
+.columns h2 {
+  margin: 0 0 var(--columns-heading-gap);
+  padding-inline: var(--columns-text-indent);
+  font-size: var(--columns-heading-size);
+  line-height: var(--columns-heading-line);
+  letter-spacing: var(--columns-heading-spacing);
 }
 
-.columns > div > div {
-  order: 1;
+.columns p {
+  margin: 0 0 var(--columns-text-gap);
+  padding-inline: var(--columns-text-indent);
+  font-size: var(--columns-text-size);
+  line-height: var(--columns-text-line);
 }
 
-.columns > div > .columns-img-col {
-  order: 0;
+.columns p.columns-eyebrow {
+  margin-bottom: 8px;
+  color: var(--princess-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: normal;
+  text-transform: uppercase;
 }
 
-.columns > div > .columns-img-col img {
+.columns p.button-container {
+  margin: 0;
+  padding: 0;
+}
+
+.columns > div > div > :last-child {
+  margin-bottom: 0;
+}
+
+/* buttons */
+.columns .columns-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px 24px;
+  margin: var(--columns-buttons-offset) 0 0 var(--columns-buttons-indent);
+}
+
+main .columns a.button:any-link:not(.primary, .tertiary) {
+  border: var(--button-border-width) solid var(--princess-pink);
+  border-radius: 35px;
+  padding: 12px 28px;
+  background-color: transparent;
+  color: var(--princess-ink);
+  font-weight: 600;
+  letter-spacing: normal;
+}
+
+main .columns a.button:any-link:not(.primary, .tertiary):hover {
+  border-color: var(--princess-pink-dark);
+  background-color: transparent;
+  color: var(--princess-ink);
+  padding-inline: 36px;
+}
+
+main > .section.dark-blue .columns a.button:any-link:not(.primary, .tertiary) {
+  border-radius: var(--button-radius);
+  padding: var(--button-padding-block) var(--button-padding-inline);
+  letter-spacing: 1px;
+}
+
+main > .section.dark-blue .columns a.button:any-link:not(.primary, .tertiary):hover {
+  padding-inline: var(--button-padding-inline-hover);
+}
+
+main .columns a.button.tertiary:any-link {
+  gap: 10px;
+  letter-spacing: 1px;
+}
+
+main .columns a.button.tertiary:any-link::after {
+  width: 40px;
+  height: 40px;
+  font-size: 28px;
+}
+
+/* images */
+.columns picture {
   display: block;
 }
 
-.columns > div > div :is(h2, h3) {
-  letter-spacing: -0.01em;
+.columns img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-.columns > div > div p {
-  line-height: 1.65;
+/* single image: 3:2 crop, rounded bottom-left corner */
+.columns .columns-img-col img {
+  aspect-ratio: 3 / 2;
+  border-radius: 0 0 0 64px;
+}
+
+/* image pair: portrait crops, rounded bottom-right corner on the last image */
+.columns .columns-img-group {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+}
+
+.columns .columns-img-group img {
+  aspect-ratio: 2 / 3;
+  border-radius: 0;
+}
+
+.columns .columns-img-group > picture:last-child img {
+  border-radius: 0 0 75px;
 }
 
 @media (width >= 900px) {
+  .columns {
+    --columns-heading-size: 44px;
+    --columns-heading-line: 48px;
+    --columns-heading-gap: 32px;
+    --columns-text-gap: 32px;
+  }
+
+  main > .section.dark-blue .columns {
+    --columns-heading-size: 32px;
+    --columns-heading-line: 36px;
+    --columns-heading-gap: 16px;
+    --columns-buttons-offset: 120px;
+    --columns-buttons-indent: 16px;
+  }
+
+  /* text 40% / image 60% */
   .columns > div {
+    flex-direction: row;
     align-items: center;
-    flex-direction: unset;
-    gap: var(--space-2xl, 48px);
+    gap: 3.125%;
   }
 
   .columns > div > div {
-    flex: 1;
-    order: unset;
+    flex: 2;
+    min-width: 0;
+  }
+
+  .columns > div > .columns-img-col {
+    flex: 3;
+  }
+
+  /* text + image pair: 400 / 290 / 510 */
+  .columns > div:has(> .columns-img-group) {
+    justify-content: center;
+    gap: 40px;
+  }
+
+  .columns > div > .columns-img-col.columns-img-group {
+    flex: 4.2;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .columns .columns-img-col img {
+    border-radius: 0 0 0 120px;
+  }
+
+  .columns .columns-img-group > picture {
+    flex: 290;
+    min-width: 0;
+  }
+
+  .columns .columns-img-group > picture:last-child {
+    flex: 510;
+  }
+
+  .columns .columns-img-group img {
+    border-radius: 0;
+  }
+
+  .columns .columns-img-group > picture:last-child img {
+    border-radius: 0 0 100px;
   }
 }

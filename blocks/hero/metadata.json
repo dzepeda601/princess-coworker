@@ -1,0 +1,35 @@
+{
+  "variantName": "hero",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Full-width page-opening banner with a background image and an overlaid text panel (optional eyebrow tagline, H1 heading, body copy, CTA)",
+    "layout": "First row is the image, rendered full-bleed with reduced opacity and a bottom gradient fade; last row is the text, absolutely positioned over the image, vertically centred and left-aligned.",
+    "behavior": [
+      "Two pictures: first is the light-theme image, second the dark-theme image; only the one matching the current theme is shown.",
+      "No picture: the block gets the `no-image` class automatically and the text is shown centred in normal flow.",
+      "A paragraph placed before the H1 is styled as the uppercase eyebrow tagline (only when the block contains an H1).",
+      "Body paragraphs are hidden below 600px viewport width."
+    ]
+  },
+  "contentPattern": {
+    "structure": "row 1 = one image (optionally a second row with a second image for the dark theme); last row = text cell with an optional tagline paragraph, an H1 heading, optional body paragraph(s) and an optional CTA link",
+    "rows": [
+      { "name": "image", "content": "picture", "required": false },
+      { "name": "image-dark", "content": "picture", "required": false, "note": "Only add when a separate dark-theme image is wanted; any second picture triggers the light/dark swap." },
+      { "name": "text", "content": "tagline p (before H1), H1, p, CTA link", "required": true }
+    ],
+    "notes": [
+      "The tagline and `hero-text` decoration only run when the heading is an H1. Other heading levels render, but get no tagline styling.",
+      "Videos are not supported; use a still image (for example the video poster)."
+    ]
+  },
+  "options": [
+    { "class": "rust", "label": "Rust background" },
+    { "class": "gold", "label": "Gold background" },
+    { "class": "ink", "label": "Ink background" }
+  ],
+  "memberVariantIds": [],
+  "usage": "Use once at the top of a page for the main promotional banner. Author the promo copy as real text, not as text baked into an image.",
+  "reuseGuidance": "Use the plain hero for photo banners. The rust/gold/ink options are solid brand-colour backgrounds, mainly for heroes with no image. Do not add a second image unless it is a dark-theme alternate."
+}

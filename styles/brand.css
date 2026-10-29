@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Princess Cruises brand tokens (source: https://www.princess.com/)
+   Values measured from source computed styles at 1440px and 375px.
+   ========================================================================== */
+
+/* Metric-adjusted fallback for the licensed DomaineDisplay heading face
+   (self-hosted by princess.com without CORS). Same definition as the header
+   block uses, so headings and navigation render consistently. */
+@font-face {
+  font-family: domainedisplay-fallback;
+  font-style: normal;
+  font-weight: 400 800;
+
+  /* preloaded by scripts.js; "optional" keeps the first paint's font instead of reflowing */
+  font-display: optional;
+  src: url('../fonts/eb-garamond.woff2') format('woff2');
+  size-adjust: 121%;
+}
+
+/* Local fallbacks sized to proxima-nova's measured advance widths, so text
+   wraps the same before and after the Typekit font swaps in (avoids CLS). */
+@font-face {
+  font-family: proxima-nova-fallback;
+  font-weight: 100 500;
+  src: local('Arial');
+  size-adjust: 86.7%;
+}
+
+@font-face {
+  font-family: proxima-nova-fallback;
+  font-weight: 600 900;
+  src: local('Arial Bold'), local('Arial-BoldMT');
+  size-adjust: 79.5%;
+}
+
+:root {
+  /* palette */
+  --princess-blue: #003595;
+  --princess-ink: #020215;
+  --princess-pink: #e60060;
+  --princess-pink-dark: #bb004f;
+  --princess-pink-light: #fde6ef;
+  --princess-cream: #f2efed;
+  --princess-sand: #f9f7f6;
+  --princess-light-blue: #cce7eb;
+  --princess-white: #fff;
+  --princess-gray-line: #d3d3d7;
+  --princess-gray-input: #a7a7ae;
+  --princess-gray-disabled: #7b7b86;
+  --princess-focus: #007cdb;
+
+  /* fonts */
+  --brand-body-font: proxima-nova, proxima-nova-fallback, roboto, "Helvetica Neue", arial, sans-serif;
+  --brand-heading-font: domainedisplay, domainedisplay-fallback, "EB Garamond", georgia, serif;
+
+  /* semantic colors */
+  --brand-background: var(--princess-white);
+  --brand-text: var(--princess-ink);
+  --brand-heading: var(--princess-blue);
+  --brand-link: var(--princess-ink);
+  --brand-link-hover: var(--princess-ink);
+  --brand-accent: var(--princess-pink);
+  --brand-accent-hover: var(--princess-pink-dark);
+
+  /* type scale – mobile (375px) */
+  --brand-h1-size: 48px;
+  --brand-h1-line: 52px;
+  --brand-h2-size: 48px;
+  --brand-h2-line: 52px;
+  --brand-h3-size: 24px;
+  --brand-h3-line: 30px;
+  --brand-h4-size: 22px;
+  --brand-h4-line: 28px;
+  --brand-h5-size: 20px;
+  --brand-h5-line: 26px;
+  --brand-h6-size: 18px;
+  --brand-h6-line: 24px;
+  --brand-display-size: 40px;
+  --brand-display-line: 44px;
+  --brand-body-size: 16px;
+  --brand-body-line: 24px;
+  --brand-lead-size: 22px;
+  --brand-lead-line: 33px;
+  --brand-button-size: 20px;
+  --brand-button-line: 20px;
+
+  /* spacing / layout */
+  --brand-content-max-width: 1280px;
+  --brand-gutter: 24px;
+  --brand-section-padding-top: 32px;
+  --brand-section-padding-bottom: 48px;
+  --brand-button-radius: 100px;
+  --brand-input-radius: 30px;
+  --brand-card-radius: 8px;
+  --brand-nav-height: 71px;
+}
+
+@media (width >= 900px) {
+  :root {
+    /* type scale – desktop (1440px) */
+    --brand-h1-size: 72px;
+    --brand-h1-line: 80px;
+    --brand-h2-size: 66px;
+    --brand-h2-line: 77px;
+    --brand-h3-size: 32px;
+    --brand-h3-line: 35px;
+    --brand-h4-size: 24px;
+    --brand-h4-line: 30px;
+    --brand-h5-size: 20px;
+    --brand-h5-line: 26px;
+    --brand-h6-size: 18px;
+    --brand-h6-line: 24px;
+    --brand-gutter: 32px;
+    --brand-section-padding-top: 48px;
+    --brand-section-padding-bottom: 64px;
+  }
+}
+
+@media (width >= 1200px) {
+  :root {
+    --brand-nav-height: 125px;
+  }
+}

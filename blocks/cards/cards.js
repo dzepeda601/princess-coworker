@@ -108,6 +108,73 @@ function decorateBento(block) {
   block.replaceChildren(ul);
 }
 
+const CARD_TYPES = ['overlay', 'deal', 'feature'];
+const HEADING_TAGS = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+const isHeading = (el) => HEADING_TAGS.includes(el.tagName);
+
+/**
+ * Wrap the text that follows a struck-through (old) price so the current
+ * price can be styled, e.g. "From <del>$1,060</del> $529".
+ * @param {Element} p price paragraph
+ */
+function decoratePrice(p) {
+  p.classList.add('cards-card-price');
+  p.querySelectorAll('del, s').forEach((del) => {
+    const next = del.nextSibling;
+    if (next && next.nodeType === Node.TEXT_NODE && next.textContent.trim()) {
+      const span = createTag('span', { class: 'cards-card-price-current' });
+      next.replaceWith(span);
+      span.append(next);
+    }
+  });
+}
+
+/**
+ * Classify a default card by its authored content, so one block renders the
+ * different card patterns used across the site:
+ * - overlay: image + body holding only a heading (label shown on the image)
+ * - deal: heading, optional price (with strikethrough) and a CTA, no description
+ * - feature: heading with descriptive text and an optional CTA
+ * CTAs default to the outline (deal) or text-link (feature) style unless the
+ * author emphasised the link (bold = primary, italic = secondary).
+ * @param {Element} li card
+ */
+function classifyCard(li) {
+  const image = li.querySelector(':scope > .cards-card-image');
+  const body = li.querySelector(':scope > .cards-card-body');
+  const children = body ? [...body.children] : [];
+
+  if (image && children.length && children.every(isHeading)) {
+    li.classList.add('cards-card-overlay');
+    // the visible label already names the tile; an identical alt would be read twice
+    const label = body.textContent.trim();
+    image.querySelectorAll('img').forEach((img) => {
+      if (img.alt.trim() === label) img.alt = '';
+    });
+    return;
+  }
+
+  let hasDescription = false;
+  children.forEach((el) => {
+    if (el.classList.contains('button-container')) {
+      el.classList.add('cards-card-cta');
+    } else if (el.tagName === 'P' && el.querySelector('del, s')) {
+      decoratePrice(el);
+    } else if (!isHeading(el)) {
+      hasDescription = true;
+    }
+  });
+
+  const type = hasDescription ? 'feature' : 'deal';
+  li.classList.add(`cards-card-${type}`);
+  children.filter((el) => el.classList.contains('cards-card-cta')).forEach((cta) => {
+    const link = cta.querySelector('a.button');
+    if (link && !link.classList.contains('primary') && !link.classList.contains('secondary')) {
+      link.classList.add(type === 'deal' ? 'secondary' : 'tertiary');
+    }
+  });
+}
+
 /**
  * Decorate regular cards (authored rows with image + body).
  */
@@ -138,31 +205,24 @@ function decorateDefault(block) {
       });
     }
 
-    const linkEl = li.querySelector('.cards-card-image a[href]') || li.querySelector('.cards-card-body a[href]');
-    if (linkEl) {
-      const wrapper = createTag('div', { class: 'cards-card-link' });
-      while (li.firstChild) wrapper.append(li.firstChild);
-      li.append(wrapper);
-      const parent = linkEl.parentElement;
-      if (parent) {
-        parent.classList.remove('button-container');
-      }
-      linkEl.classList.remove('button');
-    }
-
-    const article = createTag('article');
-    while (li.firstChild) article.append(li.firstChild);
-    li.append(article);
-
+    classifyCard(li);
     ul.append(li);
   });
 
   ul.querySelectorAll('picture > img').forEach((img) => {
     const picture = img.closest('picture');
-    if (picture) {
+    const url = new URL(img.src, window.location.href);
+    // only same-origin raster images can be served through the media optimizer
+    if (picture && url.origin === window.location.origin && !url.pathname.endsWith('.svg')) {
       picture.replaceWith(createOptimizedPicture(img.src, img.alt || '', false, [{ width: '750' }]));
     }
   });
+
+  // block-level layout hints: the shared card type, and a 4-up grid for sets of 4, 8, ...
+  const cards = [...ul.children];
+  const types = new Set(cards.map((li) => CARD_TYPES.find((t) => li.classList.contains(`cards-card-${t}`))));
+  if (types.size === 1) block.classList.add(`cards-layout-${[...types][0]}`);
+  if (cards.length % 4 === 0 && cards.length % 3 !== 0) block.classList.add('cards-cols-4');
 
   block.replaceChildren(ul);
 }

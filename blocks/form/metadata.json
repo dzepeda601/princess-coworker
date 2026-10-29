@@ -1,0 +1,31 @@
+{
+  "variantName": "form",
+  "baseBlock": "form",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "purpose": "Form built from a JSON field definition (spreadsheet), with client-side validation and JSON POST submission",
+    "layout": "Bordered, rounded panel holding a single-column grid of fields; buttons are centred in a row at the bottom, followed by a polite live status message.",
+    "behavior": [
+      "Lazily fetches the form definition when the block scrolls into view.",
+      "The first link in the block is the form definition (JSON with `data` or `fields` array); the optional second link is the submit endpoint.",
+      "Field types: text and other input types, textarea, select (comma-separated options or an options URL), radio, checkbox, toggle, submit, reset, and confirmation (a same-origin thank-you path shown as a fragment on success).",
+      "Field properties: field, label, type, required, default, placeholder, help, options, conditional.",
+      "If the definition cannot be loaded, the block's section wrapper is removed."
+    ]
+  },
+  "contentPattern": {
+    "structure": "one cell with a link to the form definition JSON, optionally followed by a link to the submit endpoint",
+    "rows": [
+      { "name": "definition", "content": "link to form definition JSON (e.g. /forms/newsletter.json)", "required": true },
+      { "name": "submit", "content": "link to POST endpoint", "required": false }
+    ],
+    "notes": [
+      "Without a submit link the form renders but does not submit.",
+      "Status messages (Sending..., Thanks!, error) are currently fixed in the block code."
+    ]
+  },
+  "options": [],
+  "memberVariantIds": [],
+  "usage": "Use for newsletter sign-up, contact and similar forms. Create a form definition sheet (for example an email field plus a SIGN UP submit) and link it from the block.",
+  "reuseGuidance": "Has no options. Change fields in the definition sheet, not in the block."
+}
