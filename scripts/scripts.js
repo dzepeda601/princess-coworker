@@ -359,7 +359,6 @@ function watchForTargetInjectedBlocks(main) {
   observer.observe(main, { childList: true, subtree: true });
 }
 
-
 /**
  * Starts the heading font download before first paint. Its @font-face uses
  * font-display: optional, so an early fetch decides whether it is used at all.
@@ -468,7 +467,6 @@ async function loadLazy(doc) {
   loadFooter(footerEl);
   if (!IS_EDITOR) await martechLazy();
 
-
   /* Header scroll shadow: add .scrolled class once user scrolls past nav height */
   const navWrapper = doc.querySelector('.nav-wrapper');
   if (navWrapper) {
@@ -524,6 +522,8 @@ async function loadLazy(doc) {
       addSidekickListeners(document.querySelector('aem-sidekick'));
     }, { once: true });
   }
+
+  import('../tools/sidekick/aem-genai-variations.js');
 }
 
 const IS_QUICK_EDIT = new URL(window.location.href).searchParams.has('quick-edit');
